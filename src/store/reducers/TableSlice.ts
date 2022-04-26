@@ -30,7 +30,10 @@ export const tableSlice = createSlice({
         },
         search: (state, action: PayloadAction<string>) => {
             state.rows = state.rows.filter((row) =>
-                Object.values(row).toString().includes(action.payload),
+                Object.values(row)
+                    .toString()
+                    .toLowerCase()
+                    .includes(action.payload.toLowerCase()),
             );
         },
     },

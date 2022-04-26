@@ -81,10 +81,12 @@ const Table: React.FC<ITable> = ({ rows, search, sort }) => {
     };
 
     const clickSort = () => {
+        let isDefault = !isDefaultSort;
+        setIsDefaultSort(isDefault);
         sort();
     };
 
-    const [isDefaultSort] = useState(true);
+    const [isDefaultSort, setIsDefaultSort] = useState(true);
 
     return (
         <StyledTableWrapper>
