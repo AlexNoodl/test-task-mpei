@@ -15,7 +15,7 @@ import { IRows } from '../interfaces';
 
 const StyledDashboard = styled.div`
     width: 100%;
-    height: 100vh;
+    height: calc(100vh - 8rem);
     background: #e2f0f0;
     padding: 0.75rem 7.5rem 2rem 5rem;
 `;
