@@ -30,7 +30,7 @@ const Header: React.FC = () => {
                         <Flex justify={'space-between'}>
                             <p>Help</p>
                             <img
-                                src={'/assets/images/header/help.svg'}
+                                src={'assets/images/header/help.svg'}
                                 alt={'help'}
                             />
                         </Flex>
