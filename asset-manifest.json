@@ -1,0 +1,12 @@
+{
+  "files": {
+    "main.css": "/test-task-mpei/static/css/main.1fe2a691.css",
+    "main.js": "/test-task-mpei/static/js/main.885e5054.js",
+    "index.html": "/test-task-mpei/index.html",
+    "main.885e5054.js.map": "/test-task-mpei/static/js/main.885e5054.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.1fe2a691.css",
+    "static/js/main.885e5054.js"
+  ]
+}
