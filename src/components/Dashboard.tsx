@@ -1,36 +1,40 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import styled from 'styled-components';
 import Flex from '../ui/Flex';
 import Button from '../ui/Button';
-import { Filters } from '../data';
+import {Filters} from '../data';
 import Filter from './Filter';
 
 import Icon from '../ui/Icon';
 import TableHeader from './TableHeader';
 import Table from './Table';
 import Margin from '../ui/Margin';
-import { useAppDispatch, useAppSelector } from '../hooks/redux';
-import { tableSelector, tableSlice } from '../store/reducers/TableSlice';
-import { IRows } from '../interfaces';
+import {useAppDispatch, useAppSelector} from '../hooks/redux';
+import {tableSelector, tableSlice} from '../store/reducers/TableSlice';
+import {IRows, ISearchParams} from '../interfaces';
 
 const StyledDashboard = styled.div`
-    width: 100%;
-    height: calc(100vh - 8rem);
-    background: #e2f0f0;
-    padding: 0.75rem 7.5rem 2rem 5rem;
+  width: 100%;
+  height: calc(100vh - 8rem);
+  background: #e2f0f0;
+  padding: 0.75rem 7.5rem 2rem 5rem;
 `;
 
 const StyledButtonText = styled.p`
-    margin-left: 1rem;
+  margin-left: 1rem;
 `;
 
 const Dashboard: React.FC = () => {
     const filters = Filters;
+    const initialState: ISearchParams = {
+        query: '', even: false, odd: false, reversed: false
+    }
     const dispatch = useAppDispatch();
-    const { rows } = useAppSelector(tableSelector);
-    const { even, odd, clearFilters, addNew, search, sort } =
+    const {rows} = useAppSelector(tableSelector);
+    const {clearFilters, addNew, search} =
         tableSlice.actions;
     const [, setActiveFilter] = useState(Filters);
+    const [searchParams, setSearchParams] = useState<ISearchParams>(initialState);
 
     const addNewData = (): void => {
         const newRow: IRows = {
@@ -46,12 +50,9 @@ const Dashboard: React.FC = () => {
 
     const randomSum = (): number => Math.floor(Math.random() * 500);
 
-    const searchHandler = (str: string) => {
-        if (!str) {
-            dispatch(clearFilters());
-        } else {
-            dispatch(search(str));
-        }
+    const searchHandler = (query: string) => {
+        setSearchParams({...searchParams, query})
+
     };
 
     const changeFilter = (index: number) => {
@@ -63,18 +64,22 @@ const Dashboard: React.FC = () => {
 
         switch (index) {
             case 0:
-                return dispatch(even());
+                return setSearchParams({...searchParams, odd: false, even: true})
             case 1:
-                return dispatch(odd());
+                return setSearchParams({...searchParams, odd: true, even: false})
             case 2:
-                return dispatch(clearFilters());
+                setSearchParams({...initialState, reversed: searchParams.reversed})
+                return dispatch(clearFilters(searchParams));
         }
     };
     const sortHandler = () => {
-        dispatch(sort());
+        const isReversed = searchParams.reversed;
+        setSearchParams({...searchParams, reversed: !isReversed})
     };
 
-    useEffect(() => {}, [rows, filters]);
+    useEffect(() => {
+        dispatch(search(searchParams))
+    }, [searchParams])
 
     return (
         <StyledDashboard>
@@ -115,12 +120,13 @@ const Dashboard: React.FC = () => {
                 </Flex>
                 <Flex direction={'column'}>
                     <Margin margin={'0 0 2rem 0'}>
-                        <TableHeader />
+                        <TableHeader/>
                     </Margin>
                     <Table
                         rows={rows}
                         search={(str) => searchHandler(str)}
                         sort={() => sortHandler()}
+                        query={searchParams.query}
                     />
                 </Flex>
             </Flex>

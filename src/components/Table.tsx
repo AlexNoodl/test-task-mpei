@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import styled from 'styled-components';
-import { HeaderData } from '../data';
+import {HeaderData} from '../data';
 import Flex from '../ui/Flex';
-import { IRows } from '../interfaces';
+import {IRows} from '../interfaces';
 import Icon from '../ui/Icon';
 import Margin from '../ui/Margin';
 
@@ -14,72 +14,69 @@ interface ITable {
     rows: IRows[];
     search: (str: string) => void;
     sort: () => void;
+    query: string;
 }
 
 const StyledTableWrapper = styled.div`
-    display: grid;
-    grid-template-columns: 2fr repeat(5, 1fr);
-    min-width: 57.5rem;
+  display: grid;
+  grid-template-columns: 2fr repeat(5, 1fr);
+  min-width: 57.5rem;
 `;
 
 const StyledTableCell = styled.div<ITableRow>`
-    border-top: ${(props) => props.border || '2px #e3e5e5 solid'};
-    font-weight: 500;
-    font-size: 1.25rem;
-    line-height: 1.75rem;
-    color: ${(props) => props.color || '#5E6366'};
-    height: 4rem;
+  border-top: ${(props) => props.border || '2px #e3e5e5 solid'};
+  font-weight: 500;
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+  color: ${(props) => props.color || '#5E6366'};
+  height: 4rem;
 `;
 
 const StyledHeaderCell = styled(StyledTableCell)`
-    font-family: Quicksand, serif;
-    font-size: 1rem;
-    border-top: none;
+  font-family: Quicksand, serif;
+  font-size: 1rem;
+  border-top: none;
 `;
 
 const StyledSearch = styled.input`
-    background: 0;
-    border: 1px #c6cacc solid;
-    border-radius: 0.625rem;
-    padding: 0.25rem 0.75rem;
-    font-size: 0.875rem;
-    line-height: 1.25rem;
+  background: 0;
+  border: 1px #c6cacc solid;
+  border-radius: 0.625rem;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
 
-    &::placeholder {
-        color: #000000;
-    }
+  &::placeholder {
+    color: #000000;
+  }
 `;
 
 const StyledPlug = styled.div`
-    border: 1px #c6cacc solid;
-    border-radius: 0.625rem;
-    width: 5.375rem;
-    height: 2rem;
+  border: 1px #c6cacc solid;
+  border-radius: 0.625rem;
+  width: 5.375rem;
+  height: 2rem;
 `;
 
 const StyledIconWrapper = styled.div`
-    position: relative;
+  position: relative;
 `;
 
 const UpArrowDiv = styled.div`
-    position: absolute;
-    top: -7px;
+  position: absolute;
+  top: -7px;
 `;
 
 const DownArrowDiv = styled(UpArrowDiv)`
-    position: absolute;
-    top: 3px;
+  position: absolute;
+  top: 3px;
 `;
 
 const StyledSortCell = styled.div`
-    cursor: pointer;
+  cursor: pointer;
 `;
 
-const Table: React.FC<ITable> = ({ rows, search, sort }) => {
-    const changeSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-        search(e.target.value);
-    };
-
+const Table: React.FC<ITable> = ({rows, search, sort, query}) => {
     const clickSort = () => {
         let isDefault = !isDefaultSort;
         setIsDefaultSort(isDefault);
@@ -87,6 +84,18 @@ const Table: React.FC<ITable> = ({ rows, search, sort }) => {
     };
 
     const [isDefaultSort, setIsDefaultSort] = useState(true);
+    const [inputValue, setInputValue] = useState('')
+    const inputRef = useRef<HTMLInputElement>(null)
+
+    useEffect(() => {
+        if (!query) {
+            setInputValue('')
+        }
+    }, [query])
+
+    useEffect(() => {
+        search(inputValue)
+    }, [inputValue, search])
 
     return (
         <StyledTableWrapper>
@@ -140,14 +149,16 @@ const Table: React.FC<ITable> = ({ rows, search, sort }) => {
 
             <StyledTableCell border={'none'}>
                 <StyledSearch
+                    ref={inputRef}
+                    value={inputValue}
+                    onChange={(e) => setInputValue(e.target.value)}
                     placeholder={'Search...'}
-                    onChange={(e) => changeSearch(e)}
                 />
             </StyledTableCell>
 
             {HeaderData.map((_, index) => (
                 <StyledTableCell key={index} border={'none'}>
-                    <StyledPlug />
+                    <StyledPlug/>
                 </StyledTableCell>
             ))}
         </StyledTableWrapper>

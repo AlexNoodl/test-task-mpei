@@ -16,7 +16,7 @@ export const Filters: TFilterData[] = [
         isActive: false,
     },
     {
-        image: 'all-data',
+        image: 'print',
         title: 'All data',
         description: 'Display all data',
         isActive: true,
