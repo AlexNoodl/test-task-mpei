@@ -1,7 +1,7 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { IRows } from '../../interfaces';
-import { TableData } from '../../data';
-import { RootState } from '../store';
+import {createSlice, PayloadAction} from '@reduxjs/toolkit';
+import {IRows, ISearchParams} from '../../interfaces';
+import {TableData} from '../../data';
+import {RootState} from '../store';
 
 interface TableState {
     rows: IRows[];
@@ -9,36 +9,44 @@ interface TableState {
 
 const initialState: TableState = {
     rows: TableData,
+
 };
 
 export const tableSlice = createSlice({
     name: 'table',
     initialState,
     reducers: {
-        clearFilters: (state) => initialState,
-        even: (state) => {
-            state.rows = state.rows.filter((row, index) => index % 2 !== 0);
+        clearFilters: (state, action: PayloadAction<ISearchParams>) => {
+            if (action.payload.reversed) {
+                state.rows = [...initialState.rows].reverse()
+            } else {
+                return initialState;
+            }
         },
-        odd: (state) => {
-            state.rows = state.rows.filter((row, index) => index % 2 === 0);
-        },
-        sort: (state) => {
-            state.rows = [...state.rows].reverse();
+        search: (state, action: PayloadAction<ISearchParams>) => {
+            state.rows = initialState.rows.filter(row => row.column1.toLowerCase().includes(action.payload.query.toLowerCase()))
+
+            if (action.payload.odd) {
+                state.rows = state.rows.filter((row, index) => index % 2 === 0)
+            }
+
+            if (action.payload.even) {
+                state.rows = state.rows.filter((row, index) => index % 2 !== 0)
+            }
+
+            if (action.payload.reversed) {
+                state.rows = [...state.rows].reverse()
+            }
+
         },
         addNew: (state, action: PayloadAction<IRows>) => {
             state.rows.push(action.payload);
         },
-        search: (state, action: PayloadAction<string>) => {
-            state.rows = state.rows.filter((row) =>
-                Object.values(row)
-                    .toString()
-                    .toLowerCase()
-                    .includes(action.payload.toLowerCase()),
-            );
-        },
+
     },
 });
 
 export default tableSlice.reducer;
 
 export const tableSelector = (state: RootState) => state.table;
+

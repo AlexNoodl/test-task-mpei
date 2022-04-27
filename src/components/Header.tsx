@@ -3,13 +3,15 @@ import Flex from '../ui/Flex';
 import Logo from './Logo';
 import Button from '../ui/Button';
 import UserPic from './UserPic';
-import { useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
+import {useNavigate} from 'react-router-dom';
+import styled from "styled-components";
+import userImage from '../assets/images/header/userpic.svg'
+import helpImage from '../assets/images/header/help.svg'
 
 const StyledHeader = styled.div`
-    height: 4rem;
-    width: 100%;
-    padding: 0.75rem 1rem;
+  height: 4rem;
+  width: 100%;
+  padding: 0.75rem 1rem;
 `;
 
 const Header: React.FC = () => {
@@ -18,7 +20,7 @@ const Header: React.FC = () => {
     return (
         <StyledHeader>
             <Flex justify={'space-between'}>
-                <Logo />
+                <Logo/>
                 <Flex justify={'end'}>
                     <Button
                         onClick={() => navigate('/help')}
@@ -30,7 +32,7 @@ const Header: React.FC = () => {
                         <Flex justify={'space-between'}>
                             <p>Help</p>
                             <img
-                                src={'assets/images/header/help.svg'}
+                                src={helpImage}
                                 alt={'help'}
                             />
                         </Flex>
@@ -43,7 +45,7 @@ const Header: React.FC = () => {
                         Upgrade
                     </Button>
                     <UserPic
-                        img={'assets/images/header/userpic.svg'}
+                        img={userImage}
                         description={'Avatar'}
                     />
                 </Flex>

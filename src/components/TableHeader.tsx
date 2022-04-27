@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import Flex from '../ui/Flex';
 import Icon from '../ui/Icon';
 import Button from '../ui/Button';
+import arrowDown from '../assets/images/icons/arrow_down.svg'
 
 const StyleTitle = styled.div`
     font-family: Quicksand, serif;
@@ -14,7 +15,7 @@ const StyleTitle = styled.div`
 const StyledSelect = styled.select`
     height: 2rem;
     width: 14.5rem;
-    background: url('assets/images/icons/arrow_down.svg') no-repeat 97% center;
+    background: url(${arrowDown}) no-repeat 97% center;
     border: 1px #c6cacc solid;
     border-radius: 0.625rem;
     padding: 0.25rem 0.75rem;
@@ -52,7 +53,7 @@ const TableHeader: React.FC = () => {
                     margin={'0 0.5rem'}
                     padding={'0.625rem'}
                 >
-                    <Icon iconName={'all-data'} width={22} height={22} />
+                    <Icon iconName={'print'} width={22} height={22} />
                 </Button>
                 <Button
                     onClick={() => downloadData()}

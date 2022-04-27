@@ -1,4 +1,5 @@
 import React from 'react';
+import Icons from '../assets/images/icons/icons.svg'
 
 interface IIconProps {
     iconName: TIconNames;
@@ -8,7 +9,7 @@ interface IIconProps {
 }
 
 export type TIconNames =
-    | 'all-data'
+    | 'print'
     | 'even'
     | 'odd'
     | 'download'
@@ -24,7 +25,7 @@ const Icon: React.FC<IIconProps> = (props) => {
             color={props.color || '#78909C'}
         >
             <use
-                href={`assets/images/icons/${props.iconName}.svg#${props.iconName}`}
+                xlinkHref={`${Icons}#${props.iconName}`}
             />
         </svg>
     );
